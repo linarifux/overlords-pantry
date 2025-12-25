@@ -49,7 +49,7 @@
 
 ### 1. Clone the Repository
 
-git clone [https://github.com/yourusername/overlords-pantry.git](https://github.com/yourusername/overlords-pantry.git)
+git clone [https://github.com/linarifux/overlords-pantry.git](https://github.com/linarifux/overlords-pantry.git)
 cd overlords-pantry
 
 ### 2. Install Dependencies
