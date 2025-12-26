@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLoginMutation } from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 import Loader from '../../components/shared/Loader';
-import { FaCat } from 'react-icons/fa';
+import { FaCat, FaLock, FaEnvelope } from 'react-icons/fa';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +14,6 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Get query params (e.g., ?redirect=/shipping)
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const redirect = searchParams.get('redirect') || '/';
@@ -41,49 +40,67 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-2xl border border-gray-100">
+    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      {/* Login Card */}
+      <div className="max-w-md w-full space-y-8 bg-[#1a1025] p-10 rounded-[3rem] shadow-2xl border border-white/10 relative overflow-hidden group">
         
-        <div className="text-center">
-          <FaCat className="mx-auto h-12 w-12 text-purple-600" />
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+        {/* Background Glow Effects */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-purple-600/10 rounded-full blur-[60px] -z-10 group-hover:bg-purple-600/20 transition-all duration-700"></div>
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-amber-600/5 rounded-full blur-[60px] -z-10 group-hover:bg-amber-600/10 transition-all duration-700"></div>
+
+        {/* Header Section */}
+        <div className="text-center relative">
+          <div className="mx-auto h-20 w-20 bg-[#0f0716] rounded-2xl flex items-center justify-center border border-white/5 mb-6 shadow-[0_0_20px_rgba(168,85,247,0.2)] group-hover:shadow-[0_0_30px_rgba(251,191,36,0.4)] transition-all duration-500">
+            <FaCat className="h-10 w-10 text-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.8)]" />
+          </div>
+          <h2 className="text-3xl font-black text-white tracking-tight">
             Identify Yourself
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-purple-200/60 font-medium">
             Enter your credentials to serve the Overlord.
           </p>
         </div>
 
+        {/* Custom Error Message */}
         {errMsg && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-sm text-center">
-            {errMsg}
+          <div className="bg-red-900/20 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl relative text-sm text-center animate-pulse">
+            <span className="font-bold mr-1">Error:</span> {errMsg}
           </div>
         )}
 
         <form className="mt-8 space-y-6" onSubmit={submitHandler}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="email-address" className="sr-only">Email address</label>
+          <div className="space-y-5">
+            
+            {/* Email Input */}
+            <div className="relative group/input">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <FaEnvelope className="text-gray-500 group-focus-within/input:text-amber-400 transition-colors" />
+              </div>
               <input
                 id="email-address"
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                className="block w-full pl-11 pr-4 py-4 bg-[#0f0716] border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-sm font-medium shadow-inner"
+                placeholder="Servant Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Password</label>
+
+            {/* Password Input */}
+            <div className="relative group/input">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <FaLock className="text-gray-500 group-focus-within/input:text-amber-400 transition-colors" />
+              </div>
               <input
                 id="password"
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
+                className="block w-full pl-11 pr-4 py-4 bg-[#0f0716] border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 transition-all text-sm font-medium shadow-inner"
+                placeholder="Passphrase"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -94,17 +111,23 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-purple-900 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
+              className="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all shadow-lg hover:shadow-purple-500/30 transform hover:-translate-y-0.5"
             >
-              {isLoading ? <Loader /> : 'Sign In'}
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader className="w-4 h-4" /> Authenticating...
+                </div>
+              ) : (
+                'Access Pantry'
+              )}
             </button>
           </div>
         </form>
         
-        <div className="text-center mt-4">
-           <p className="text-sm text-gray-600">
+        <div className="text-center mt-6 pt-6 border-t border-white/5">
+           <p className="text-sm text-gray-500">
              New Servant?{' '}
-             <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="font-medium text-purple-600 hover:text-purple-500">
+             <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="font-bold text-amber-500 hover:text-amber-400 transition-colors hover:underline">
                Register here
              </Link>
            </p>

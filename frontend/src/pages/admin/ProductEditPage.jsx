@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { FaArrowLeft, FaUpload, FaSave } from 'react-icons/fa';
+import { FaArrowLeft, FaUpload, FaSave, FaBoxOpen } from 'react-icons/fa';
 import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
@@ -76,23 +75,32 @@ const ProductEditPage = () => {
     try {
       const res = await uploadProductImage(formData).unwrap();
       toast.success(res.message, { theme: 'dark' });
-      setImage(res.image); // This updates the state, showing the thumbnail immediately
+      setImage(res.image);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <Link to='/admin/productlist' className='flex items-center gap-2 text-gray-600 hover:text-purple-700 mb-6 font-semibold'>
+    <div className="container mx-auto px-4 py-8 max-w-2xl relative z-10">
+      
+      <Link to='/admin/productlist' className='flex items-center gap-2 text-gray-400 hover:text-amber-400 mb-6 font-semibold transition-colors w-fit'>
          <FaArrowLeft /> Back to Inventory
       </Link>
 
-      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Edit Offering</h1>
+      <div className="bg-[#1a1025] rounded-[2rem] shadow-2xl p-8 border border-white/10 relative overflow-hidden">
+        
+        {/* Subtle Background Glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-[80px] -z-10"></div>
+        
+        <div className="flex items-center gap-3 mb-8">
+           <div className="p-3 bg-purple-900/30 rounded-xl text-amber-400">
+             <FaBoxOpen size={24} />
+           </div>
+           <h1 className="text-3xl font-black text-white tracking-tight">Edit Offering</h1>
+        </div>
 
         {loadingUpdate && <Loader />}
-        {/* We removed loadingUpload from here to put it inside the image box */}
 
         {isLoading ? (
           <Loader />
@@ -102,76 +110,86 @@ const ProductEditPage = () => {
           <form onSubmit={submitHandler} className="space-y-6">
             
             {/* Name */}
-            <div>
-              <label className="block text-gray-700 font-bold mb-2">Product Name</label>
+            <div className="space-y-2">
+              <label className="text-gray-400 font-bold text-sm uppercase tracking-wider ml-1">Product Name</label>
               <input
                 type='text'
                 placeholder='Enter name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-5 py-3 bg-[#0f0716] border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all placeholder-gray-600"
               />
             </div>
 
             {/* Price & Stock */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-700 font-bold mb-2">Price ($)</label>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-gray-400 font-bold text-sm uppercase tracking-wider ml-1">Price ($)</label>
                 <input
                   type='number'
-                  placeholder='Enter price'
+                  placeholder='0.00'
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-5 py-3 bg-[#0f0716] border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all placeholder-gray-600 font-mono"
                 />
               </div>
-              <div>
-                <label className="block text-gray-700 font-bold mb-2">Count In Stock</label>
+              <div className="space-y-2">
+                <label className="text-gray-400 font-bold text-sm uppercase tracking-wider ml-1">Stock Count</label>
                 <input
                   type='number'
-                  placeholder='Enter stock'
+                  placeholder='0'
                   value={countInStock}
                   onChange={(e) => setCountInStock(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-5 py-3 bg-[#0f0716] border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all placeholder-gray-600 font-mono"
                 />
               </div>
             </div>
 
             {/* Image Upload Section */}
-            <div>
-              <label className="block text-gray-700 font-bold mb-2">Image</label>
+            <div className="space-y-2">
+              <label className="text-gray-400 font-bold text-sm uppercase tracking-wider ml-1">Product Image</label>
               
-              <div className="flex gap-2 mb-2">
+              <div className="hidden">
                  <input
                   type='text'
-                  placeholder='Enter image url'
                   value={image}
                   onChange={(e) => setImage(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-50 text-gray-500"
                   readOnly
                 />
               </div>
 
-              {/* NEW: Thumbnail & Loader Area */}
-              <div className="my-4 flex justify-center p-4 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 min-h-[160px] items-center">
+              {/* THUMBNAIL AREA */}
+              <div className="relative group my-4 flex justify-center p-6 border-2 border-dashed border-white/10 rounded-2xl bg-[#0f0716]/50 min-h-[200px] items-center transition-all hover:border-purple-500/50 hover:bg-[#0f0716]">
                   {loadingUpload ? (
-                      <div className="text-center">
+                      <div className="text-center z-10">
                           <Loader />
-                          <p className="text-sm text-purple-600 mt-2 font-semibold">Uploading to Cloud...</p>
+                          <p className="text-sm text-amber-400 mt-4 font-bold animate-pulse">Uploading to Cloud...</p>
                       </div>
                   ) : image ? (
-                      <img 
-                        src={image} 
-                        alt="Product Preview" 
-                        className="h-40 w-40 object-contain rounded-lg shadow-md bg-white p-2 border border-gray-100" 
-                      />
+                      <div className="relative z-10">
+                        <img 
+                          src={image} 
+                          alt="Product Preview" 
+                          className="h-48 w-48 object-contain rounded-xl shadow-2xl bg-[#1a1025] p-2 border border-white/10" 
+                        />
+                        <div className="absolute -bottom-2 -right-2 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded shadow-lg">
+                          UPLOADED
+                        </div>
+                      </div>
                   ) : (
-                      <p className="text-gray-400 text-sm">No image uploaded yet</p>
+                      <div className="text-center text-gray-500 z-10">
+                        <FaUpload className="mx-auto text-3xl mb-2 opacity-50" />
+                        <p className="text-sm">No image uploaded</p>
+                      </div>
                   )}
+                  
+                  {/* Background Grid Pattern */}
+                  <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
               </div>
 
-              <label className="flex items-center justify-center gap-2 cursor-pointer bg-purple-100 text-purple-700 py-2 rounded-lg hover:bg-purple-200 transition-colors font-bold">
-                 <FaUpload /> Upload Image
+              <label className="w-full flex items-center justify-center gap-2 cursor-pointer bg-[#0f0716] text-purple-400 border border-purple-500/30 py-3 rounded-xl hover:bg-purple-500/10 hover:text-purple-300 transition-all font-bold group">
+                 <FaUpload className="group-hover:-translate-y-1 transition-transform" /> 
+                 <span>Select New Image</span>
                  <input
                     type="file"
                     onChange={uploadFileHandler}
@@ -181,46 +199,46 @@ const ProductEditPage = () => {
             </div>
 
             {/* Brand & Category */}
-            <div className="grid grid-cols-2 gap-4">
-               <div>
-                  <label className="block text-gray-700 font-bold mb-2">Brand</label>
+            <div className="grid grid-cols-2 gap-6">
+               <div className="space-y-2">
+                  <label className="text-gray-400 font-bold text-sm uppercase tracking-wider ml-1">Brand</label>
                   <input
                     type='text'
-                    placeholder='Enter brand'
+                    placeholder='e.g., Mr. Mew'
                     value={brand}
                     onChange={(e) => setBrand(e.target.value)}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-5 py-3 bg-[#0f0716] border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all placeholder-gray-600"
                   />
                </div>
-               <div>
-                  <label className="block text-gray-700 font-bold mb-2">Category</label>
+               <div className="space-y-2">
+                  <label className="text-gray-400 font-bold text-sm uppercase tracking-wider ml-1">Category</label>
                   <input
                     type='text'
-                    placeholder='Enter category'
+                    placeholder='e.g., Toys'
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-5 py-3 bg-[#0f0716] border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all placeholder-gray-600"
                   />
                </div>
             </div>
 
             {/* Description */}
-            <div>
-              <label className="block text-gray-700 font-bold mb-2">Description</label>
+            <div className="space-y-2">
+              <label className="text-gray-400 font-bold text-sm uppercase tracking-wider ml-1">Description</label>
               <textarea
-                placeholder='Enter description'
+                placeholder='Describe the tribute...'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-5 py-3 bg-[#0f0716] border border-white/10 rounded-xl text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all placeholder-gray-600 resize-none"
               ></textarea>
             </div>
 
             <button
               type='submit'
-              className="w-full flex items-center justify-center gap-2 bg-purple-900 text-white font-bold py-3 rounded-xl hover:bg-purple-800 transition-all shadow-lg hover:shadow-purple-900/30"
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-700 to-purple-900 text-white font-bold py-4 rounded-xl hover:from-purple-600 hover:to-purple-800 transition-all shadow-lg hover:shadow-purple-500/30 transform hover:-translate-y-1 mt-4"
             >
-              <FaSave /> Update Offering
+              <FaSave size={18} /> Update Offering
             </button>
 
           </form>
