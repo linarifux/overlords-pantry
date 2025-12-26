@@ -1,44 +1,60 @@
-import { useState, useRef, useEffect } from 'react'; // Added hooks for dropdown logic
-import { useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaUser, FaCat, FaCaretDown, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'; // Redux hooks
-import { useLogoutMutation } from '../../slices/usersApiSlice'; // API Hook
-import { logout } from '../../slices/authSlice'; // Local State Action
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  FaShoppingCart,
+  FaUser,
+  FaCat,
+  FaCaretDown,
+  FaSignOutAlt,
+  FaUserCircle,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../slices/usersApiSlice";
+import { logout } from "../../slices/authSlice";
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
-  const { userInfo } = useSelector((state) => state.auth); // Get logged in user
+  const { userInfo } = useSelector((state) => state.auth);
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // To detect clicks outside
+  // State for User Dropdown
+  const [isUserOpen, setIsUserOpen] = useState(false);
+  const userDropdownRef = useRef(null);
+
+  // State for Admin Dropdown
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const adminDropdownRef = useRef(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [logoutApiCall] = useLogoutMutation();
 
-  // Logout Handler
   const logoutHandler = async () => {
     try {
-      await logoutApiCall().unwrap(); // 1. Kill cookie on backend
-      dispatch(logout());             // 2. Kill local info
-      setIsDropdownOpen(false);
-      navigate('/login');             // 3. Redirect
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      setIsUserOpen(false);
+      navigate("/login");
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Close dropdown if clicking outside
+  // Close dropdowns if clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
+      // Close User Menu if clicked outside
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+        setIsUserOpen(false);
+      }
+      // Close Admin Menu if clicked outside
+      if (adminDropdownRef.current && !adminDropdownRef.current.contains(event.target)) {
+        setIsAdminOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -67,22 +83,60 @@ const Header = () => {
             <span className="hidden sm:block">Cart</span>
           </Link>
 
-          {/* Conditional Auth Rendering */}
+          {/* ADMIN MENU (Click to Toggle) */}
+          {userInfo && userInfo.isAdmin && (
+            <div className="relative" ref={adminDropdownRef}>
+               <button 
+                 onClick={() => setIsAdminOpen(!isAdminOpen)}
+                 className="flex items-center gap-1 text-amber-400 font-bold hover:text-amber-300 transition-colors focus:outline-none"
+               >
+                 Admin <FaCaretDown className={`text-xs transition-transform ${isAdminOpen ? 'rotate-180' : ''}`} />
+               </button>
+               
+               {/* Admin Dropdown Content */}
+               {isAdminOpen && (
+                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 text-gray-800 border border-gray-100 animate-in fade-in zoom-in-95 duration-200 z-50">
+                    <Link 
+                      to="/admin/orderlist" 
+                      className="block px-4 py-2 hover:bg-purple-50 hover:text-purple-700"
+                      onClick={() => setIsAdminOpen(false)}
+                    >
+                      Orders
+                    </Link>
+                    <Link 
+                      to="/admin/productlist" 
+                      className="block px-4 py-2 hover:bg-purple-50 hover:text-purple-700"
+                      onClick={() => setIsAdminOpen(false)}
+                    >
+                      Products
+                    </Link>
+                    <Link 
+                      to="/admin/userlist" 
+                      className="block px-4 py-2 hover:bg-purple-50 hover:text-purple-700"
+                      onClick={() => setIsAdminOpen(false)}
+                    >
+                      Users
+                    </Link>
+                 </div>
+               )}
+            </div>
+          )}
+
+          {/* User Menu (Click to Toggle) */}
           {userInfo ? (
-            // LOGGED IN: Show Dropdown
-            <div className="relative" ref={dropdownRef}>
+            <div className="relative" ref={userDropdownRef}>
               <button 
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onClick={() => setIsUserOpen(!isUserOpen)}
                 className="flex items-center gap-2 hover:text-amber-400 transition-colors focus:outline-none"
               >
                 <FaUser className="text-lg" />
                 <span className="font-semibold">{userInfo.name}</span>
-                <FaCaretDown className={`text-xs transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <FaCaretDown className={`text-xs transition-transform ${isUserOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* Dropdown Menu */}
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl py-2 text-gray-800 border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
+              {/* User Dropdown Menu */}
+              {isUserOpen && (
+                <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl py-2 text-gray-800 border border-gray-100 animate-in fade-in zoom-in-95 duration-200 z-50">
                   <div className="px-4 py-2 border-b border-gray-100">
                     <p className="text-xs text-gray-500">Signed in as</p>
                     <p className="text-sm font-bold truncate text-purple-700">{userInfo.email}</p>
@@ -91,7 +145,7 @@ const Header = () => {
                   <Link 
                     to='/profile' 
                     className="flex items-center gap-2 px-4 py-2 hover:bg-purple-50 hover:text-purple-700 transition-colors"
-                    onClick={() => setIsDropdownOpen(false)}
+                    onClick={() => setIsUserOpen(false)}
                   >
                     <FaUserCircle /> Profile
                   </Link>
@@ -106,7 +160,7 @@ const Header = () => {
               )}
             </div>
           ) : (
-            // LOGGED OUT: Show Sign In
+            // LOGGED OUT
             <Link to="/login" className="flex items-center gap-1 hover:text-amber-400 transition-colors">
               <FaUser className="text-xl" />
               <span className="hidden sm:block">Sign In</span>
