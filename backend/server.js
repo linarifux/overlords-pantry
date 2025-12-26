@@ -7,6 +7,7 @@ import productRoutes from './routes/productRoutes.js';
 import cookieParser from 'cookie-parser'; // <-- Import
 import userRoutes from './routes/userRoutes.js'; // <-- Import
 import orderRoutes from './routes/orderRoutes.js'; // <-- Import
+import uploadRoutes from './routes/uploadRoutes.js'; 
 
 dotenv.config();
 
@@ -38,6 +39,9 @@ app.use('/api/users', userRoutes);
 
 // order route
 app.use('/api/orders', orderRoutes);
+
+// image upload route
+app.use('/api/upload', uploadRoutes);
 
 // paypal check route
 app.get('/api/config/paypal', (req, res) =>

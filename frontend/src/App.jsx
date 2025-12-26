@@ -16,6 +16,7 @@ import OrderPage from "./pages/order/OrderPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import OrderListPage from './pages/admin/OrderListPage'; 
 import ProductListPage from './pages/admin/ProductListPage'; 
+import ProductEditPage from './pages/admin/ProductEditPage';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/order/:id" element={<OrderPage />} />
             <Route path="/admin/orderlist" element={<OrderListPage />} />
             <Route path="/admin/productlist" element={<ProductListPage />} />
+            <Route path="/admin/product/:id/edit" element={<ProductEditPage />} />
             
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
