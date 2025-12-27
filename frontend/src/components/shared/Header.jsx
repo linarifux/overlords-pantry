@@ -99,8 +99,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* 2. MAIN GLASS HEADER */}
-      <header className="sticky top-0 z-40 bg-[#0f0716]/80 backdrop-blur-md border-b border-white/10 shadow-lg transition-all duration-300">
+      {/* 2. MAIN HEADER */}
+      {/* UPDATED: Removed transparency/blur on mobile (bg-[#0f0716]). Glass effect only applies on md: screens. */}
+      <header className="sticky top-0 z-40 bg-[#0f0716] md:bg-[#0f0716]/80 md:backdrop-blur-md border-b border-white/10 shadow-lg transition-all duration-300">
         <nav className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center gap-4">
             
@@ -122,7 +123,7 @@ const Header = () => {
                 </span>
               </Link>
 
-              {/* DESKTOP SHOPPING MENU (New) */}
+              {/* DESKTOP SHOPPING MENU */}
               <div className="hidden lg:flex items-center gap-6">
                 {shopMenus.map((menu) => (
                   <Link 
@@ -256,11 +257,9 @@ const Header = () => {
           </div>
         </nav>
         
-        {/* 3. MOBILE MENU DRAWER (Slide in from Left) */}
-        {/* Overlay */}
+        {/* 3. MOBILE MENU DRAWER */}
         <div className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} aria-hidden="true" />
         
-        {/* Drawer */}
         <div ref={mobileMenuRef} className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-[#0f0716] border-r border-white/10 z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
             <div className="p-6">
                 <div className="flex justify-between items-center mb-8">

@@ -22,6 +22,7 @@ import OrderListPage from './pages/admin/OrderListPage';
 import ProductListPage from './pages/admin/ProductListPage'; 
 import ProductEditPage from './pages/admin/ProductEditPage';
 import ProductCreatePage from "./pages/admin/ProductCreatePage";
+import ScrollToTop from "./components/shared/ScrollToTop";
 
 const App = () => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const App = () => {
 
   return (
     <PayPalScriptProvider options={{ "client-id": "test" }} deferLoading={true}>
+      <ScrollToTop />
       
       {/* 1. GLOBAL WRAPPER: Dark Theme Base */}
       <div className="flex flex-col min-h-screen bg-[#0f0716] text-gray-100 font-sans selection:bg-amber-500 selection:text-purple-900 relative overflow-x-hidden">
