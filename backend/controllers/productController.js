@@ -44,21 +44,26 @@ const getTopProducts = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
+  // Destructure the incoming data
+  const { name, price, image, brand, category, countInStock, description } = req.body;
+
+  // If data exists, use it. If not, fallback to sample data (optional safety)
   const product = new Product({
-    name: 'Sample Name',
-    price: 0,
+    name: name || 'Sample name',
+    price: price || 0,
     user: req.user._id,
-    image: '/images/sample.jpg',
-    brand: 'Sample Brand',
-    category: 'Sample Category',
-    countInStock: 0,
+    image: image || '/images/sample.jpg',
+    brand: brand || 'Sample brand',
+    category: category || 'Sample category',
+    countInStock: countInStock || 0,
     numReviews: 0,
-    description: 'Sample description',
+    description: description || 'Sample description',
   });
 
   const createdProduct = await product.save();
   res.status(201).json(createdProduct);
 });
+
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id

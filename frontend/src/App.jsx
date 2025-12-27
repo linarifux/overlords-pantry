@@ -21,6 +21,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import OrderListPage from './pages/admin/OrderListPage'; 
 import ProductListPage from './pages/admin/ProductListPage'; 
 import ProductEditPage from './pages/admin/ProductEditPage';
+import ProductCreatePage from "./pages/admin/ProductCreatePage";
 
 const App = () => {
   const location = useLocation();
@@ -69,6 +70,7 @@ const App = () => {
             <Route path="/admin/orderlist" element={<OrderListPage />} />
             <Route path="/admin/productlist" element={<ProductListPage />} />
             <Route path="/admin/product/:id/edit" element={<ProductEditPage />} />
+            <Route path="/admin/product/create" element={<ProductCreatePage />} />
             
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

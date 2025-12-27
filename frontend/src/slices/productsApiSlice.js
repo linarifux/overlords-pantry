@@ -1,4 +1,4 @@
-import { PRODUCTS_URL} from '../constants';
+import { PRODUCTS_URL } from '../constants'; // Ensure UPLOAD_URL is imported or defined
 import { apiSlice } from './apiSlice';
 
 export const productsApiSlice = apiSlice.injectEndpoints({
@@ -8,7 +8,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         url: PRODUCTS_URL,
       }),
       keepUnusedDataFor: 5,
-      providesTags: ['Products'], // Important: Tells Redux this query provides the "Products" list
+      providesTags: ['Products'],
     }),
     getProductDetails: builder.query({
       query: (productId) => ({
@@ -16,37 +16,42 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    
+    // --- FIX START ---
     createProduct: builder.mutation({
-      query: () => ({
+      query: (data) => ({  // 1. Accept 'data' argument
         url: PRODUCTS_URL,
         method: 'POST',
+        body: data,        // 2. Pass 'data' as the body
       }),
-      invalidatesTags: ['Product'], // Clears the cache so the list updates
+      invalidatesTags: ['Product'], 
     }),
-    // NEW: Update Product (For the Edit Screen)
+    // --- FIX END ---
+
     updateProduct: builder.mutation({
       query: (data) => ({
         url: `${PRODUCTS_URL}/${data.productId}`,
         method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ['Products'], // Clears cache to show updated details
+      invalidatesTags: ['Products'],
     }),
-    // NEW: Upload Image (For the Edit Screen)
+    
+    // Make sure this matches your backend route (e.g., /api/upload)
     uploadProductImage: builder.mutation({
       query: (data) => ({
-        url: `/api/upload`, // We will create this backend route shortly
+        url: `/api/upload`, 
         method: 'POST',
         body: data,
       }),
     }),
+    
     deleteProduct: builder.mutation({
       query: (productId) => ({
         url: `${PRODUCTS_URL}/${productId}`,
         method: 'DELETE',
       }),
     }),
-    // NEW: Get Top Rated Products (For the Carousel)
     getTopProducts: builder.query({
       query: () => ({
         url: `${PRODUCTS_URL}/top`,
@@ -60,8 +65,8 @@ export const {
   useGetProductsQuery,
   useGetProductDetailsQuery,
   useCreateProductMutation,
-  useUpdateProductMutation,      // <--- Exported
-  useUploadProductImageMutation, // <--- Exported
+  useUpdateProductMutation,
+  useUploadProductImageMutation,
   useDeleteProductMutation,
   useGetTopProductsQuery,
 } = productsApiSlice;

@@ -7,7 +7,6 @@ import withReactContent from 'sweetalert2-react-content';
 
 import {
   useGetProductsQuery,
-  useCreateProductMutation,
   useDeleteProductMutation,
 } from '../../slices/productsApiSlice';
 import Loader from '../../components/shared/Loader';
@@ -17,7 +16,6 @@ const MySwal = withReactContent(Swal);
 
 const ProductListPage = () => {
   const { data: products, isLoading, error, refetch } = useGetProductsQuery();
-  const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
   const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
 
   const [keyword, setKeyword] = useState('');
@@ -31,9 +29,8 @@ const ProductListPage = () => {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6b21a8',
       confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
-      background: '#1a1025', // Dark background for modal
-      color: '#fff', // White text
+      background: '#1a1025',
+      color: '#fff',
       backdrop: `rgba(0,0,0,0.8)`
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -48,32 +45,6 @@ const ProductListPage = () => {
     });
   };
 
-  const createProductHandler = async () => {
-    MySwal.fire({
-      title: 'Create new offering?',
-      text: "This will create a blank sample product.",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#6b21a8',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, create it!',
-      iconColor: '#fbbf24',
-      background: '#1a1025',
-      color: '#fff',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await createProduct();
-          refetch();
-          toast.success('Sample product created', { theme: "dark" });
-        } catch (err) {
-          toast.error(err?.data?.message || err.error);
-        }
-      }
-    });
-  };
-
-  // Filter Logic
   const filteredProducts = products?.filter((product) => 
     product.name.toLowerCase().includes(keyword.toLowerCase()) || 
     product.category.toLowerCase().includes(keyword.toLowerCase())
@@ -88,7 +59,7 @@ const ProductListPage = () => {
           Inventory <span className="text-purple-400">Management</span>
         </h1>
         
-        {/* Search Bar UI - Dark Mode */}
+        {/* Search Bar */}
         <div className="relative w-full md:w-1/3">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FaSearch className="text-purple-400" />
@@ -102,15 +73,16 @@ const ProductListPage = () => {
           />
         </div>
 
-        <button
-          onClick={createProductHandler}
+        {/* Create Button - Now a Link */}
+        <Link
+          to="/admin/product/create"
           className="flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-900 text-white font-bold px-6 py-3 rounded-xl hover:from-purple-600 hover:to-purple-800 transition-all shadow-lg hover:shadow-purple-500/30 whitespace-nowrap transform hover:-translate-y-1"
         >
           <FaPlus /> Create Product
-        </button>
+        </Link>
       </div>
 
-      {(loadingCreate || loadingDelete) && <Loader />}
+      {loadingDelete && <Loader />}
 
       {isLoading ? (
         <Loader />
@@ -168,14 +140,6 @@ const ProductListPage = () => {
                   </td>
                 </tr>
               ))}
-              
-              {filteredProducts.length === 0 && (
-                 <tr>
-                   <td colSpan="6" className="text-center py-12 text-gray-500 italic">
-                     No products found matching "{keyword}"
-                   </td>
-                 </tr>
-              )}
             </tbody>
           </table>
         </div>
