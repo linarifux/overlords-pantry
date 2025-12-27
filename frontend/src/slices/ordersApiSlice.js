@@ -16,13 +16,19 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    // 1. Get My Orders (Logged in user history)
+    getMyOrders: builder.query({
+      query: () => ({
+        url: `${ORDERS_URL}/mine`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
     getOrderDetails: builder.query({
       query: (orderId) => ({
         url: `${ORDERS_URL}/${orderId}`,
       }),
       keepUnusedDataFor: 5,
     }),
-    // 1. Pay Order Mutation (Updates backend status to "Paid")
     payOrder: builder.mutation({
       query: ({ orderId, details }) => ({
         url: `${ORDERS_URL}/${orderId}/pay`,
@@ -30,7 +36,6 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
         body: details,
       }),
     }),
-    // 2. Get PayPal Client ID (Fetches ID from backend env)
     getPaypalClientId: builder.query({
       query: () => ({
         url: PAYPAL_URL,
@@ -49,8 +54,9 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
 export const {
   useCreateOrderMutation,
   useGetOrderDetailsQuery,
-  usePayOrderMutation,      
-  useGetPaypalClientIdQuery, 
+  usePayOrderMutation,
+  useGetPaypalClientIdQuery,
   useGetOrdersQuery,
   useDeliverOrderMutation,
+  useGetMyOrdersQuery,
 } = ordersApiSlice;

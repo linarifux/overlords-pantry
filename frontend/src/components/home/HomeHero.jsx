@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaCat, FaBolt, FaMoon, FaArrowRight, FaStar, FaFire, FaBoxOpen } from 'react-icons/fa';
+import { FaCat, FaBolt, FaMoon, FaArrowRight, FaFire, FaBoxOpen } from 'react-icons/fa';
 import { useState } from 'react';
 
 const HomeHero = () => {
@@ -7,14 +7,18 @@ const HomeHero = () => {
 
   return (
     <section className="container mx-auto px-4 py-8">
-      {/* THE BENTO GRID WRAPPER */}
-      <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px]">
+      {/* FIX 1: Changed 'h-150' to 'h-[600px]' 
+         (h-150 isn't a default class, so the grid height was collapsing) 
+      */}
+      <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-150">
         
-        {/* BLOCK 1: MAIN FEATURE (Large, spans 2 cols, 2 rows) */}
+        {/* BLOCK 1: MAIN FEATURE */}
         <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-[2.5rem] bg-purple-900 shadow-2xl">
-          {/* Background Image & Overlay */}
+          {/* Background Image */}
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-purple-950 via-purple-900/60 to-transparent opacity-90"></div>
+          
+          {/* FIX 2: Changed 'bg-linear-to-t' to 'bg-gradient-to-t' */}
+          <div className="absolute inset-0 bg-linear-to-t from-purple-950 via-purple-900/60 to-transparent opacity-90"></div>
           
           {/* Content */}
           <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
@@ -22,7 +26,11 @@ const HomeHero = () => {
               Restock Alert
             </span>
             <h1 className="text-4xl md:text-6xl font-black text-white leading-none mb-4">
-              The Red Dot <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-pink-500">9000</span>
+              The Red Dot <br/> 
+              {/* FIX 3: Changed 'bg-linear-to-r' to 'bg-gradient-to-r' */}
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-300 to-pink-500">
+                9000
+              </span>
             </h1>
             <p className="text-purple-200 text-lg mb-8 max-w-md line-clamp-2">
               Automated laser precision. Keep the beast distracted while you finally eat dinner in peace.
@@ -35,7 +43,7 @@ const HomeHero = () => {
           </div>
         </div>
 
-        {/* BLOCK 2: MOOD SELECTOR (Top Right, spans 2 cols) */}
+        {/* BLOCK 2: MOOD SELECTOR */}
         <div className="md:col-span-2 bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-xl flex flex-col justify-center relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-100 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           
@@ -66,7 +74,7 @@ const HomeHero = () => {
           </div>
         </div>
 
-        {/* BLOCK 3: FLASH DEAL (Bottom Left, 1 col) */}
+        {/* BLOCK 3: FLASH DEAL */}
         <div className="bg-amber-400 rounded-[2.5rem] p-6 relative overflow-hidden group hover:shadow-xl transition-all">
           <FaFire className="absolute -bottom-4 -right-4 text-9xl text-amber-500 opacity-50 rotate-12 group-hover:scale-110 transition-transform" />
           <div className="relative z-10 h-full flex flex-col justify-between">
@@ -86,7 +94,7 @@ const HomeHero = () => {
           </div>
         </div>
 
-        {/* BLOCK 4: NEW ARRIVAL (Bottom Right, 1 col) */}
+        {/* BLOCK 4: NEW ARRIVAL */}
         <div className="bg-indigo-900 rounded-[2.5rem] p-6 text-white relative overflow-hidden group">
            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1548802673-380ab8ebc427?auto=format&fit=crop&w=500&q=60')] bg-cover opacity-20 group-hover:opacity-30 transition-opacity"></div>
            <div className="relative z-10 flex flex-col h-full justify-between">

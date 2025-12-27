@@ -11,6 +11,10 @@ import {
   FaShippingFast, FaShieldAlt, FaCrown, FaPaperPlane, 
   FaArrowRight, FaShoppingCart, FaStar 
 } from 'react-icons/fa';
+import MarqueeBar from '../../components/home/MarqueeBar';
+
+
+
 
 const HomePage = () => {
   const { data: products, isLoading, error } = useGetProductsQuery();
@@ -20,11 +24,7 @@ const HomePage = () => {
     <div className="bg-[#0f0716] min-h-screen text-gray-100 overflow-x-hidden selection:bg-amber-400 selection:text-purple-900">
       
       {/* 0. BREAKING NEWS TICKER */}
-      <div className="bg-black border-b border-purple-800/50 text-amber-400 py-2 overflow-hidden whitespace-nowrap relative z-50">
-        <div className="animate-marquee inline-block font-mono text-xs md:text-sm font-bold tracking-widest drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]">
-          BREAKING: LOCAL TABBY SUES OWNER FOR DINNER DELAY • RED DOT CAUGHT (FAKE NEWS) • DOGS ARE STILL A MYTH • STOCK UP ON NIP BEFORE THE APOCALYPSE • 
-        </div>
-      </div>
+      <MarqueeBar />
 
       {/* 1. HERO */}
       <div className="relative z-10">
@@ -54,7 +54,7 @@ const HomePage = () => {
                 Approved by Management
               </span>
               <h2 className="text-4xl md:text-6xl font-black text-white mt-4 tracking-tight drop-shadow-xl">
-                Fresh <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">Tributes</span>
+                Fresh <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-200 to-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]">Tributes</span>
               </h2>
             </div>
             <Link to="/products" className="group mt-6 md:mt-0 flex items-center gap-2 bg-white text-purple-950 px-8 py-3 rounded-full font-bold hover:bg-amber-400 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(251,191,36,0.6)]">
@@ -70,7 +70,7 @@ const HomePage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
               {products.map((product) => (
                 // DARK CARD DESIGN
-                <div key={product._id} className="group relative bg-[#1a1025] rounded-[2rem] border border-purple-800/50 hover:border-amber-500/50 overflow-hidden shadow-xl hover:shadow-[0_0_40px_rgba(168,85,247,0.25)] transition-all duration-500 flex flex-col h-full">
+                <div key={product._id} className="group relative bg-[#1a1025] rounded-4xl border border-purple-800/50 hover:border-amber-500/50 overflow-hidden shadow-xl hover:shadow-[0_0_40px_rgba(168,85,247,0.25)] transition-all duration-500 flex flex-col h-full">
                   
                   {/* Image Area with Inner Glow */}
                   <div className="relative h-72 overflow-hidden bg-[#0a0510]">
@@ -81,7 +81,7 @@ const HomePage = () => {
                         className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
                       />
                       {/* Vignette Overlay for drama */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#1a1025] via-transparent to-transparent opacity-80"></div>
+                      <div className="absolute inset-0 bg-linear-to-t from-[#1a1025] via-transparent to-transparent opacity-80"></div>
                     </Link>
                     
                     {/* Status Badges - Neon Style */}
@@ -146,7 +146,7 @@ const HomePage = () => {
       {/* 5. TRUST SIGNALS - Dark Theme */}
       <section className="py-20 bg-[#0a0510] border-t border-purple-900 relative">
          {/* Subtle pattern */}
-         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#a855f7_1px,transparent_1px)] [background-size:16px_16px]"></div>
+         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#a855f7_1px,transparent_1px)] [bg-size:16px_16px]"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
@@ -196,7 +196,7 @@ const HomePage = () => {
 
       {/* 8. NEWSLETTER - "THE SECRET SOCIETY" */}
       <section className="container mx-auto px-4 pb-24 pt-10">
-        <div className="bg-gradient-to-br from-[#1a0b2e] via-purple-950 to-black border border-purple-800/50 rounded-[3rem] p-10 md:p-20 text-center text-white shadow-[0_0_50px_rgba(88,28,135,0.3)] relative overflow-hidden group">
+        <div className="bg-linear-to-br from-[#1a0b2e] via-purple-950 to-black border border-purple-800/50 rounded-[3rem] p-10 md:p-20 text-center text-white shadow-[0_0_50px_rgba(88,28,135,0.3)] relative overflow-hidden group">
           {/* Animated Background Elements */}
           <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 opacity-10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 group-hover:opacity-20 transition-opacity duration-700"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-600 opacity-10 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 group-hover:opacity-20 transition-opacity duration-700"></div>
@@ -206,7 +206,7 @@ const HomePage = () => {
               <FaPaperPlane className="text-amber-400 text-3xl drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
             </div>
             <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter leading-tight">
-              Join the Secret Society<br/> of <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 drop-shadow-sm">Can Openers</span>
+              Join the Secret Society<br/> of <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-200 to-amber-500 drop-shadow-sm">Can Openers</span>
             </h2>
             <p className="text-purple-200/80 mb-10 text-xl font-medium">
               Get notified when we restock. We promise not to spam (the cat sleeps 18 hours a day anyway).
@@ -231,7 +231,7 @@ const HomePage = () => {
 // Updated Dark Theme Trust Cards
 const TrustCard = ({ icon, title, desc, color, bg, border, glow }) => (
   <div className={`bg-[#130b1b] p-10 rounded-[2.5rem] text-center group transition-all duration-300 border ${border} relative overflow-hidden ${glow}`}>
-    <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500`}></div>
+    <div className={`absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-white/20 to-transparent transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500`}></div>
     <div className={`inline-flex items-center justify-center w-20 h-20 ${bg} ${color} rounded-2xl mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-[0_0_15px_currentColor] opacity-90`}>
       {icon}
     </div>

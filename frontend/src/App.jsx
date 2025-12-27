@@ -9,11 +9,15 @@ import HomePage from "./pages/home/HomePage";
 import ProductPage from "./pages/product/ProductPage";
 import CartPage from "./pages/cart/CartPage";
 import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
+import ProfilePage from "./pages/user/ProfilePage"; // <--- IMPORTED
 import ShippingPage from "./pages/shipping/ShippingPage";
 import PaymentPage from "./pages/payment/PaymentPage";
 import PlaceOrderPage from "./pages/placeorder/PlaceOrderPage";
 import OrderPage from "./pages/order/OrderPage";
 import NotFoundPage from "./pages/NotFoundPage";
+
+// Admin Pages
 import OrderListPage from './pages/admin/OrderListPage'; 
 import ProductListPage from './pages/admin/ProductListPage'; 
 import ProductEditPage from './pages/admin/ProductEditPage';
@@ -37,7 +41,7 @@ const App = () => {
           <div className="absolute -top-[20%] -right-[10%] w-[70vw] h-[70vw] bg-purple-900/10 rounded-full blur-[120px] animate-pulse"></div>
           {/* Bottom Left Amber Blob */}
           <div className="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] bg-amber-900/5 rounded-full blur-[100px] animate-pulse animation-delay-2000"></div>
-          {/* Grain/Noise Overlay for Texture (Optional, adds premium feel) */}
+          {/* Grain/Noise Overlay for Texture */}
           <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
         </div>
 
@@ -47,13 +51,15 @@ const App = () => {
         </div>
 
         {/* 4. MAIN CONTENT */}
-        {/* We conditionally apply 'container' so Home Page can be full-width, but inner pages stay centered */}
+        {/* We conditionally apply 'container' so Home Page/Auth pages can be full-width, but inner pages stay centered */}
         <main className={`grow relative z-10 ${isFullWidth ? '' : 'container mx-auto px-4 py-8 md:py-12'}`}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/profile" element={<ProfilePage />} /> {/* <--- NEW ROUTE */}
             <Route path="/shipping" element={<ShippingPage />} />
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/placeorder" element={<PlaceOrderPage />} />
